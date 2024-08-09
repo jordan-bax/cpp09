@@ -30,3 +30,12 @@
 *.exe
 *.out
 *.app
+
+*.txt
+*.pdf
+.vscode
+ex01.cpp
+test*
+btc
+PmergeMe
+RPN
