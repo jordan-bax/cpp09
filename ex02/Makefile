@@ -8,8 +8,8 @@ CC= c++
 
 val = -ggdb3
 CPPFLAGS +=	-Wall -Werror -Wextra
-CPPFLAGS += -g $(val)
-CPPFLAGS +=	-std=c++98
+# CPPFLAGS += -g $(val)
+# CPPFLAGS +=	-std=c++98
 
 all:$(NAME)
 
@@ -31,6 +31,6 @@ vgrind: all
 	valgrind --leak-check=full ./$(NAME)
 
 r: all
-	./$(NAME)
+	./$(NAME) 9 8 7 3 2 1 6 5 4
 
 .PHONY: all clean fclean re r vgrind

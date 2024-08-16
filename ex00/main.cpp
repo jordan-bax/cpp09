@@ -3,29 +3,7 @@
 #include <fstream>
 #include <string>
 #include "../mycolor.hpp"
-
-bool isLeapYear(int year) {  
-    if (year % 4 == 0) {  
-        if (year % 100 == 0) {  
-            if (year % 400 == 0) {  
-                return true;  
-            } else {  
-                return false;  
-            }  
-        } else {  
-            return true;  
-        }  
-    } else {  
-        return false;  
-    }  
-}
- int daysInMonth(int m, int y) {
-        static const int daysInMonth[] = {31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
-        if (m == 2 && isLeapYear(y)) {
-            return 29;
-        }
-        return daysInMonth[m - 1];
-    }
+#include "BitcoinExchange.hpp"
 
 int		date_to_days(std::string date)
 {
@@ -35,9 +13,24 @@ int		date_to_days(std::string date)
 
 	for (int i = 0; i < year; ++i)
 		days += isLeapYear(i) ? 366 : 365;
+	std::cout << days << "\n";
 	for (int i = 1; i < month; ++i)
 		days += daysInMonth(i, year);
+	days += std::stoi(date.substr(8));
+	// return year * 365 + month * 30 + day; 
+	return days;
+}
+int		date_to_day(std::string date)
+{
+	int days = 0;
+	int year = std::stoi(date.substr(0,4));
+	int month = std::stoi(date.substr(5,2));
+
+	for (int i = 0; i < year; ++i)
+		days += isLeapYear(i) ? 366 : 365;
 	std::cout << days << "\n";
+	for (int i = 1; i < month; ++i)
+		days += daysInMonth(i, year);
 	days += std::stoi(date.substr(8));
 	// return year * 365 + month * 30 + day; 
 	return days;
@@ -137,7 +130,7 @@ int		main(int argc, char const *argv[]){
 	std::map<std::string , float>::iterator it;
 	it = data.find("2014-06-27");
 	std::cout<< it->first << " " << it ->second << "\n";//,577.34
-	std::cout<< days_in_differance("2028-02-28","2028-03-01") << "\n";
+	std::cout<< days_in_differance("2000-00-00","1000-00-00") << "\n";
 		
 
 	return 0;
