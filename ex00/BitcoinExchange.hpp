@@ -2,10 +2,9 @@
 #include <iostream>
 #include <map>
 
-class BitcoinExchange :public std::map<std::string , float>
+class BitcoinExchange
 {
 private:
-	// std::map<std::string , float> _data;
 	int _year;
 	int _month;
 	int _days;

@@ -44,6 +44,7 @@ int main(int argc, char const *argv[])
 	}
 	jb_argumentToContaner(container1, argc, argv);
 	jb_displayContaner(container1, "Before: ");
+	ford_johnson(container1);
 	jb_displayContaner(container1, "After: ");
 	std::chrono::high_resolution_clock::time_point end = std::chrono::high_resolution_clock::now();
 	std::chrono::duration<double, std::milli> ms_double = end - start;

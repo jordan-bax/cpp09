@@ -1,6 +1,6 @@
 NAME= btc
 
-SRC= main.o 
+SRC= main.o BitcoinExchange.o
 SRC+= 
 
 HEADERS= 

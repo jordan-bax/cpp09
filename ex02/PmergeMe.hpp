@@ -17,12 +17,12 @@ void	jb_argumentToContaner(T & int_container, int argc, char const **argv)
 template<typename T>
 void	jb_displayContaner(T & int_container, std::string message)
 {
-	int		size = int_container.size();
+	size_t		size = int_container.size();
 
 	if (size > 30)
-		size = 30
+		size = 30;
 	std::cout << std::setw(15) << std::left << message;
-	for (int i = 0; i < size; i++)
+	for (size_t i = 0; i < size; i++)
 	{
 		std::cout << int_container[i] << " ";
 	}
@@ -53,12 +53,27 @@ b search 5
 b search 6
 12345678
 */
-std::vector<int> ford_jonson(std::vector<int> container)
+std::vector<int> ford_johnson(std::vector<int> &container)
 {
-	std::vector<int> sub_container;
-	for (size_t i = 0; i < container.size(); i+=2)
+	size_t				size = container.size();
+	std::vector<int>	sub_container;
+	std::vector<int>	pairs_container[size / 2];
+	int					temp;
+	for (size_t i = 0; i + 1 < size; i+=2)
 	{
-		
+		// std
+		if (container[i] > container[i + 1])
+		{
+			temp = container[i];
+			container[i] = container[i + 1];
+			container[i + 1] = temp;
+			sub_container.push_back(container[i + 1]);
+		}
+		else
+		{
+			sub_container.push_back(container[i + 1]);
+		}
 	}
-	
+	jb_displayContaner(sub_container, "test; ");
+	return sub_container;
 }
