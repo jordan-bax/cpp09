@@ -140,7 +140,7 @@ int		main(int argc, char const *argv[]){
 
 	if (argc != 2)
 	{
-		std::cout << FG_RED"Program needs a file name"<< FG_DEFAULT<< std::endl;
+		std::cout << FG_RED"Error: Program needs a file name"<< FG_DEFAULT<< std::endl;
 		return 1;
 	}
 	get_from_files(data, "data.csv");

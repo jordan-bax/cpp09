@@ -27,8 +27,8 @@ bool	ft_stringSet(char const *src, char const *set)
 int main(int argc, char const *argv[])
 {
 	std::vector<int> container1;
-	// container1.
-	std::chrono::high_resolution_clock::time_point start = std::chrono::high_resolution_clock::now();
+
+	std::deque<int> container2;
 	if (argc < 3)
 	{
 		std::cout << FG_RED << "Error, can't sort with les than 2 numbers" << FG_DEFAULT << std::endl;
@@ -42,13 +42,24 @@ int main(int argc, char const *argv[])
 			return 1;
 		}
 	}
+	std::chrono::high_resolution_clock::time_point start = std::chrono::high_resolution_clock::now();
 	jb_argumentToContaner(container1, argc, argv);
 	jb_displayContaner(container1, "Before: ");
-	ford_johnson(container1);
+	ford_johnson<std::vector>(container1);
 	jb_displayContaner(container1, "After: ");
 	std::chrono::high_resolution_clock::time_point end = std::chrono::high_resolution_clock::now();
 	std::chrono::duration<double, std::milli> ms_double = end - start;
-	std::cout << ms_double.count() << "ms\n";
+	start = std::chrono::high_resolution_clock::now();
+	jb_argumentToContaner(container2, argc, argv);
+	// jb_displayContaner(container2, "Before: ");
+	ford_johnson<std::deque>(container2);
+	// jb_displayContaner(container2, "After: ");
+	end = std::chrono::high_resolution_clock::now();
+	std::cout << "Time to process a range of "<<container1.size()
+		<<" elements with std::vector : "<< ms_double.count() << "ms\n";
+	ms_double = end - start;
+	std::cout << "Time to process a range of "<<container2.size()
+		<<" elements with std::deque : "<< ms_double.count() << "ms\n";
 	return 0;
 }
  
