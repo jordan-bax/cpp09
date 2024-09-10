@@ -1,5 +1,6 @@
 #include "RPN.hpp"
-//if operator calls recursice operator function then or else sets sum
+
+// if operation calls recursively to math expresion functions. else sets sum and claculate the stack
 static bool	what_RPN(std::stack<char> & stack, int & sum);
 static void	RPN_is_Empty(std::stack<char> & stack)
 {

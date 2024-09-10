@@ -5,45 +5,6 @@
 #include "../mycolor.hpp"
 #include "BitcoinExchange.hpp"
 #include <iomanip>
-// int		date_to_days(std::string date)
-// {
-// 	int days = 0;
-// 	int year = std::stoi(date.substr(0,4));
-// 	int month = std::stoi(date.substr(5,2));
-
-// 	for (int i = 0; i < year; ++i)
-// 		days += isLeapYear(i) ? 366 : 365;
-// 	std::cout << days << "\n";
-// 	for (int i = 1; i < month; ++i)
-// 		days += daysInMonth(i, year);
-// 	days += std::stoi(date.substr(8));
-// 	// return year * 365 + month * 30 + day; 
-// 	return days;
-// }
-// int		date_to_day(std::string date)
-// {
-// 	int days = 0;
-// 	int year = std::stoi(date.substr(0,4));
-// 	int month = std::stoi(date.substr(5,2));
-
-// 	for (int i = 0; i < year; ++i)
-// 		days += isLeapYear(i) ? 366 : 365;
-// 	std::cout << days << "\n";
-// 	for (int i = 1; i < month; ++i)
-// 		days += daysInMonth(i, year);
-// 	days += std::stoi(date.substr(8));
-// 	// return year * 365 + month * 30 + day; 
-// 	return days;
-// }
-// int		days_in_differance(std::string date1, std::string date2)
-// {
-// 	int days;
-
-// 	days = date_to_days(date1) - date_to_days(date2);
-// 	if (days < 0)
-// 		days *= -1;
-// 	return days;
-// }
 
 bool	is_date(char a)
 {

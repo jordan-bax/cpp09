@@ -24,6 +24,8 @@ Commander Shadowsun 37.5
 doos met boel 110
 */
 // template section
+
+// copy the argument to a container that has a push_back function
 template<typename T>
 void	jb_argumentToContaner(T & int_container, int argc, char const **argv)
 {
@@ -32,22 +34,8 @@ void	jb_argumentToContaner(T & int_container, int argc, char const **argv)
 		int_container.push_back(std::stoi(argv[i]));
 	}
 }
-template<typename T>
-void	jb_containeToPointerContaner(T & int_container, std::vector<int*> & point_container)
-{
-	typename T::iterator it = int_container.begin();
-	typename T::iterator ite = int_container.end();
-	// int	size = int_container.size();
-	// for (int i = 1; i < size ; i++)
-	while (it != ite)
-	{
 
-		// std::cout << &(*it) << " ";
-		point_container.push_back(&(*it));
-		// std::cout << point_container.size() << " ";
-		it++;
-	}
-}
+// displays in standard out the contents of a container with pointers plus a message before
 template<typename T>
 void	jb_displayContanerpointer(T & int_container, std::string message, bool display_pairs)
 {
@@ -66,6 +54,7 @@ void	jb_displayContanerpointer(T & int_container, std::string message, bool disp
 		std::cout << "[...]";
 	std::cout << std::endl;
 }
+// displays in standard out the contents of a container plus a message before
 template<typename T>
 void	jb_displayContaner(T & int_container, std::string message)
 {
@@ -82,29 +71,6 @@ void	jb_displayContaner(T & int_container, std::string message)
 		std::cout << "[...]";
 	std::cout << std::endl;
 }
-
-/*
-67 85 31 24
-67 58 13 24
-7834
-lv 2
-78 34
-78 34
-84
-lv 3
-48
-l2 
-48
-348
-b search 7
-3478
-lv 1
-3478
-13478
-b search 2
-b search 5
-b search 6
-12345678*/
 
 // Merge two sorted halves into a single sorted array
 template<typename T>
@@ -166,12 +132,16 @@ void merge_sort(T& arr, int left, int right) {
 	// Merge the sorted halves
 	merge(arr, left, mid, right);
 }
+
+// sorts a int container with the ford_johnson algaritme.
+// the template strips the container argument type so we still need to define them, including the default allocator type.
+// and I used container features that limit the containers pool to vectors and deques.
 template<template<typename ELM,typename ALLOC> class T>
 T<int,std::allocator<int>> ford_johnson(T<int,std::allocator<int>> &container)
 {
 	size_t				size = container.size();
 	T<int*,std::allocator<int*>>	sub_container;
-	std::array<int,2>	pairs_container[size / 2];
+	std::array<int,2>	pairs_container[size / 2]; // it needs to be a array or vector to make sure the contents are orderd after each other in memory
 
 	// split container in pairs where the lager is after the smaller number
 	// then make a pointer sub_container consisting of the addres of the larger number of each pair
@@ -200,7 +170,7 @@ T<int,std::allocator<int>> ford_johnson(T<int,std::allocator<int>> &container)
 	final_container.push_back(*(sub_container[0] - 1));
 	final_container.push_back(*(sub_container[0]));
 
-	// insert using lower_bound a binary search the smaler number of the sorted pairs by largest number 
+	// insert using lower_bound (a binary search) the smaler number of the pairs that was sorted by the larger numbers of each pair
 	// then add at the back the larger number that we know should be the largest number at that moment
 	for (size_t i = 1; i < size; i++)
 	{
@@ -212,7 +182,5 @@ T<int,std::allocator<int>> ford_johnson(T<int,std::allocator<int>> &container)
 	size = container.size();
 	if (size % 2 == 1)
 		final_container.insert(std::lower_bound(final_container.begin(),final_container.end(),container.back()),container.back());
-
-	container = final_container;
 	return final_container;
 }

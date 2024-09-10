@@ -31,6 +31,9 @@ vgrind: all
 	valgrind --leak-check=full ./$(NAME)
 
 r: all
-	./$(NAME) 9 8 7 3 2 1 6 5 4
+	./$(NAME) `shuf -i 1-20 -n 10 | tr "\n" " "`
+	./$(NAME) `shuf -i 1-100 -n 30 | tr "\n" " "`
+	./$(NAME) `shuf -i 1-100000 -n 3000 | tr "\n" " "`
+	./$(NAME) `shuf -i 1-100000 -n 30000 | tr "\n" " "`
 
 .PHONY: all clean fclean re r vgrind
