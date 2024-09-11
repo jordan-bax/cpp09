@@ -6,28 +6,66 @@
 #include "BitcoinExchange.hpp"
 #include <iomanip>
 
-bool	is_date(char a)
+bool	is_number(char a)
 {
-	std::string str("0123456789-");
+	static std::string str("0123456789");
 	if (a != '\0' && str.find(a) < str.size())
 		return true;
 	return false;
 }
+bool	is_date(char a)
+{
+	static std::string str("0123456789-");
+	if (a != '\0' && str.find(a) < str.size())
+		return true;
+	return false;
+}
+bool	extract_date(std::string& date, unsigned int &index)
+{
+	std::string format("0000-00-00");
 
-void splitDateAndNumber(std::string& date, float& number) {
-	unsigned int index = 0;
-	while(index < date.size() && is_date(date[index]))
+	if (date.size() < format.size())
+	{
+		std::cout << FG_RED << "Error: date is to short for the format (xxxx-xx-xx). => "<< date << FG_DEFAULT << std::endl;
+		return false;
+	}
+	while(index < format.size())
+	{
+		if (format[index] == '0' && !is_number(date[index]))
+		{
+			std::cout << FG_RED << "Error: date is not following the format (xxxx-xx-xx). => "<< date << FG_DEFAULT << std::endl;
+			return false;
+		}
+		else if (format[index] == '-' && date[index] != '-')
+		{
+			std::cout << FG_RED << "Error: date is not following the format (xxxx-xx-xx). => "<< date << FG_DEFAULT << std::endl;
+			return false;
+		}
 		index++;
+	}
+	if (is_date(date[index]))
+	{
+		std::cout << FG_RED << "Error: date is to long for the format (xxxx-xx-xx). => "<< date << FG_DEFAULT << std::endl;
+		return false;
+	}
+	return true;
+}
+
+bool splitDateAndNumber(std::string& date, float& number) {
+	unsigned int index = 0;
+	std::string line;
+
+	if (!extract_date(date,index))
+		return false;
+    line = date.substr(0, index);
 	while(index < date.size() && !is_date(date[index]))
 		index++;
 	if (is_date(date[index]))
 		number = std::stod(date.substr(index));
 	else
 		number = -1;
-	index = 0;
-	while(index < date.size() && is_date(date[index]))
-		index++;
-    date = date.substr(0, index);
+	date = line;
+	return true;
 }
 
 void	find_bitexchange(std::map<std::string , float> &data, std::string & line, float & number){
@@ -73,8 +111,8 @@ void	get_from_files2(std::map<std::string , float> &data, std::string file){
 	std::getline(read_file,line);
 	while (std::getline(read_file,line))
 	{
-		splitDateAndNumber(line, number);
-		find_bitexchange(data, line, number);
+		if (splitDateAndNumber(line, number))
+			find_bitexchange(data, line, number);
 	}
 	read_file.close();
 }
@@ -89,10 +127,11 @@ void	get_from_files(std::map<std::string , float> &data, std::string file){
 		std::cout << FG_RED << "Error: can't open file => "<< file << FG_DEFAULT << std::endl;
 		return;
 	}
+	std::getline(read_file,line);
 	while (std::getline(read_file,line))
 	{
-		splitDateAndNumber(line, number);
-		data.insert(std::pair<std::string , float> (line, number));
+		if (splitDateAndNumber(line, number))
+			data.insert(std::pair<std::string , float> (line, number));
 	}
 }
 
