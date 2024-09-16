@@ -54,6 +54,24 @@ void	jb_displayContanerpointer(T & int_container, std::string message, bool disp
 		std::cout << "[...]";
 	std::cout << std::endl;
 }
+template<typename T>
+void	jb_displayContanerToContainer(T & int_container, std::string message, bool display_pairs)
+{
+	size_t		size = int_container.size();
+
+	if (size > 30)
+		size = 30;
+	std::cout << std::setw(15) << std::left << message;
+	for (size_t i = 0; i < size; i++)
+	{
+		if (display_pairs)
+			std::cout << (int_container[i][0]) << " ";
+		std::cout << int_container[i][1] << " ";
+	}
+	if (size < int_container.size())
+		std::cout << "[...]";
+	std::cout << std::endl;
+}
 // displays in standard out the contents of a container plus a message before
 template<typename T>
 void	jb_displayContaner(T & int_container, std::string message)
@@ -65,7 +83,7 @@ void	jb_displayContaner(T & int_container, std::string message)
 	std::cout << std::setw(15) << std::left << message;
 	for (size_t i = 0; i < size; i++)
 	{
-		std::cout << int_container[i] << " ";
+		std::cout << int_container[i] << ", ";
 	}
 	if (size < int_container.size())
 		std::cout << "[...]";

@@ -60,7 +60,7 @@ bool splitDateAndNumber(std::string& date, float& number) {
     line = date.substr(0, index);
 	while(index < date.size() && !is_date(date[index]))
 		index++;
-	if (is_date(date[index]))
+	if (is_number(date[index]))
 		number = std::stod(date.substr(index));
 	else
 		number = -1;
