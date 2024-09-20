@@ -5,24 +5,7 @@
 #include <deque>
 #include <array>
 #include <iomanip>
-/*
-– 1x Kroot War Shaper *1
-– 1x Kroot Flesh Shaper *1
-– 20x Kroot Carnivores 37.5 *3
-– 1x Krootox Rider 30 *3
-– 3x Krootox Rampagers 43.5 *4
-*/
 
-/*
-12x Kroot farstalker 43.5 *2 85pt
-1x Kroot Lone-Spear 37.5 *2 90pt
-1x Kroot Trail Shaper 24 *2
-5x Kroot Hounds 29 *1
-Tau: Hammerhead Gunship 51 *2
-tau Darkstrider 27
-Commander Shadowsun 37.5
-doos met boel 110
-*/
 // template section
 
 // copy the argument to a container that has a push_back function

@@ -61,7 +61,7 @@ std::vector<int> create_s(std::vector<std::vector<int>> sorted_split_array,int s
 		// add smaller elements into 'pend'
 		pend.push_back((sorted_split_array[i])[0]);
 	}
-
+	std::cout << sorted_split_array[];
 	// Insert the first element in S -- we know it's the smallest, since it
 	// was already sorted smaller in the first pairing
 	S.insert(S.begin(), pend[0]);
