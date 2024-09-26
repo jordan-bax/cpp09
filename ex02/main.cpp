@@ -1,3 +1,4 @@
+#include <algorithm>
 #include "PmergeMe2.hpp"
 #include <chrono>
 #include "../mycolor.hpp"
@@ -46,7 +47,7 @@ int main(int argc, char const *argv[])
 			return 1;
 		}
 	}
-
+	g_comperisons = 0;
 	// start time by getting the current system time
 	std::chrono::high_resolution_clock::time_point start = std::chrono::high_resolution_clock::now();
 	// place the argument in container and execute the ford jonson
@@ -59,12 +60,15 @@ int main(int argc, char const *argv[])
 	// calculate the time spend by milliseconds inside a double type
 	std::chrono::duration<double, std::milli> ms_double = end - start;
 	// start time by getting the current system time
-	start = std::chrono::high_resolution_clock::now();
+	g_comperisons = 0;
 	jb_argumentToContaner(container2, argc, argv);
+	start = std::chrono::high_resolution_clock::now();
+	jb_displayContaner(container2, "Before: ");
 	container2 = ford_johnson<std::deque, int,int>(container2);
 	// container2 = ford_johnson<std::deque>(container2);
 	// end time by getting the current system time
 	end = std::chrono::high_resolution_clock::now();
+	jb_displayContaner(container2, "After: ");
 	if ( ms_double <= end - start)
 	{
 		s_container1 = FG_GREEN;
@@ -81,5 +85,12 @@ int main(int argc, char const *argv[])
 	ms_double = end - start;
 	std::cout << s_container2<<"Time to process a range of "<<container2.size()
 		<<" elements with std::deque : "<< ms_double.count() << "ms\n" FG_DEFAULT;
+	jb_displayContaner(container1, "After: ");
+	std::vector<int> container3;
+	jb_argumentToContaner(container3, argc, argv);
+	// jb_displayContaner(container3, "Before: ");
+	std::sort(container3.begin(),container3.end());
+	jb_displayContaner(container3, "Before: ");
+	std::cout << "comparesons made -> "<< g_comperisons<< std::endl;
 	return 0;
 }
