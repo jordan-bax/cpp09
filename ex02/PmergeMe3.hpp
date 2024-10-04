@@ -293,19 +293,14 @@ T<TYPE,std::allocator<TYPE>> ford_johnson(T<TYPE,std::allocator<TYPE>> &containe
 	// if (size % 2 == 1)
 	// 	final_container.insert(std::lower_bound(final_container.begin(),final_container.end(),container.back()),container.back());
 	return final_container;
-}/*
-726498521
-72 64 98 53 1
-7264 9853 
-9853 7264
- 
-98 72 64 53
-987654321*/
-template<template<typename ELM,typename ALLOC> class T, typename TYPE>
+}
+template<template<typename ELM,typename ALLOC> class T, typename TYPE, typename PAIR_TYPE>
 T<TYPE,std::allocator<TYPE>> ford_johnson(T<TYPE,std::allocator<TYPE>> &container, int level)
 {
 	size_t				size = container.size();
-	T<T<>,std::allocator<std::pair<PAIR_TYPE,PAIR_TYPE>>>	sub_container;
+	// jb_displayContaner(container, "malloc; ");
+	T<std::pair<PAIR_TYPE,PAIR_TYPE>,std::allocator<std::pair<PAIR_TYPE,PAIR_TYPE>>>	sub_container;
+	// std::array<int,2>	pairs_container[size / 2]; // it needs to be a array or vector to make sure the contents are orderd after each other in memory
 	
 	// split container in pairs where the lager is after the smaller number
 	// then make a pointer sub_container consisting of the addres of the larger number of each pair
@@ -313,10 +308,14 @@ T<TYPE,std::allocator<TYPE>> ford_johnson(T<TYPE,std::allocator<TYPE>> &containe
 	{
 		if ( compare_higher_than(container[i], container[i + 1]) )//find_number(container[i]) > find_number(container[i + 1]))
 		{
+			// pairs_container[i / 2] = container[i + 1];
+			// pairs_container[i / 2][1] = container[i];
 			sub_container.push_back(std::pair<PAIR_TYPE,PAIR_TYPE> (container[i], container[i + 1]));
 		}
 		else
 		{
+			// pairs_container[i / 2][0] = (container[i]);
+			// pairs_container[i / 2][1] = (container[i + 1]);
 			sub_container.push_back(std::pair<PAIR_TYPE,PAIR_TYPE> (container[i+1], container[i]));
 		}
 	}
@@ -326,6 +325,7 @@ T<TYPE,std::allocator<TYPE>> ford_johnson(T<TYPE,std::allocator<TYPE>> &containe
 	// insertion_sort_pairs(sub_container, (sub_container.size() -1));
 	// jb_display_pairs(sub_container, "test; ", false);
 
+	// size = sub_container.size()
 	T<TYPE,std::allocator<TYPE>> final_container;
 
 	// save a comperison by manualy inerting the first pair
@@ -335,5 +335,17 @@ T<TYPE,std::allocator<TYPE>> ford_johnson(T<TYPE,std::allocator<TYPE>> &containe
 		insertion_sort(sub_container,final_container,container.back(),true);
 	else
 		insertion_sort(sub_container,final_container,container.back(),false);
+	// insert using lower_bound (a binary search) the smaler number of the pairs that was sorted by the larger numbers of each pair
+	// then add at the back the larger number that we know should be the largest number at that moment
+	// for (size_t i = 1; i < size; i++)
+	// {
+	// 	final_container.insert(std::lower_bound(final_container.begin(),final_container.end(),*(sub_container[i].second)),*(sub_container[i].second));
+	// 	final_container.push_back(*(sub_container[i]));
+	// }
+
+	// // check for odd size and insert the last number if true
+	// size = container.size();
+	// if (size % 2 == 1)
+	// 	final_container.insert(std::lower_bound(final_container.begin(),final_container.end(),container.back()),container.back());
 	return final_container;
 }
