@@ -7,6 +7,8 @@
 #include <iomanip>
 
 // template section
+
+// one global to keep count of the comperisons
 int g_comperisons;
 
 // copy the argument to a container that has a push_back function
@@ -73,6 +75,7 @@ void	jb_displayContaner(T & int_container, std::string message)
 		std::cout << "[...]";
 	std::cout << std::endl;
 }
+// overload in case its not a container
 int find_number(int pairs)
 {
 	// std::type_info;
@@ -80,6 +83,7 @@ int find_number(int pairs)
 	return pairs;
 
 }
+// returns the first and largest number of the pair container
 template<typename T>
 int find_number(T pairs)
 {
@@ -92,6 +96,7 @@ int find_number(T pairs)
 	// 	return	find_number(pairs[0]);
 	return find_number(pairs[0]);
 }
+// displays the pair container in std::out if bool = true displays the connected pair before the larger one
 template<typename T>
 void	jb_display_pairs(T & int_container, std::string message, bool display_pairs)
 {
@@ -110,50 +115,6 @@ void	jb_display_pairs(T & int_container, std::string message, bool display_pairs
 		std::cout << "[...]";
 	std::cout << std::endl;
 }
-template<typename T, typename ELEM>
-T insert(ELEM	element, T &A, size_t n)
-{
-	// jb_displayContaner(element,"ll");
-	// std::cout <<n<< "test\n";
-	if (n < 0)
-		A[0] = element;
-	else if (find_number(element.first) >= find_number((A[n]).first))
-	{
-		if (n == A.size()-1)
-			A.push_back(element);
-		else
-			A[n+1] = element;
-	}
-	else
-	{
-		if (n == A.size()-1)
-			A.push_back(A[n]);
-		else
-		{
-			A[n+1] = A[n];
-			if (n > 0)
-				insert(element, A, n-1);
-			else
-				A[0] = element;
-		}
-	}
-	return A;
-}
-
-// entry function to recusrively sort pairs by their higher value
-
-template<typename T>
-T insertion_sort_pairs(T &split_array, unsigned int size)
-{
-	if (size < 1)
-		return split_array;
-	else
-	{
-		insertion_sort_pairs(split_array, size - 1);
-		insert(split_array[size], split_array, size - 1);
-	}
-	return split_array;
-}
 
 // Recursive function to generate nth Jacobsthal number
 unsigned int jacobsthal(unsigned int n){
@@ -168,7 +129,7 @@ unsigned int jacobsthal(unsigned int n){
 	// recurse!
 	return jacobsthal(n - 1) + 2 * jacobsthal(n - 2);
 }
-
+// megre two containers and returns a new conatianer consisting of the two after each other 
 template<typename T>
 T merge_container(T first, T second)
 {
@@ -177,14 +138,17 @@ T merge_container(T first, T second)
 		container.push_back(*it);
 	return container;
 }
+// overload in case its not a container
 int split_container_front(int pairs)
 {
 	return pairs;
 }
+// overload in case its not a container
 int split_container_back(int pairs)
 {
 	return pairs;
 }
+// splits a container and returns a new container of the front half
 template<typename T>
 T split_container_front(T pairs)
 {
@@ -193,6 +157,7 @@ T split_container_front(T pairs)
 		container.push_back(*it);
 	return container;
 }
+// splits a container and returns a new container of the back half
 template<typename T>
 T split_container_back(T pairs)
 {
@@ -202,6 +167,7 @@ T split_container_back(T pairs)
 	return container;
 }
 // arg1 > arg2
+// the only function to compair the content of the containers and thus easy counting of comperisons 
 template< typename L,typename ELEM>
 bool compare_higher_than(L element1, ELEM element2){
 	g_comperisons++;
@@ -212,15 +178,14 @@ bool compare_higher_than(L element1, ELEM element2){
 template< typename L>
 void insertion_sort2(L &final_container, int element , unsigned int start, unsigned int size)
 {
-	// jb_displayContaner(final_container, "4");
 	if (start >= size)
 	{
 		final_container.insert((final_container.begin()+start),element);
 		return;
 	}
 	unsigned int middel = (size - start) / 2 + start;
-	std::cout <<"start; "<< start <<"middel; " <<middel <<" size; "<<size << " elem; "<< find_number(element)<< "\n";
-	if ( compare_higher_than(element, final_container[middel]) )// find_number(final_container[middel]) < find_number(element))
+	// std::cout <<"start; "<< start <<"middel; " <<middel <<" size; "<<size << " elem; "<< find_number(element)<< "\n";
+	if ( compare_higher_than(element, final_container[middel]) )
 		insertion_sort2(final_container, element, middel +1, size);
 	else
 		insertion_sort2(final_container, element, start, middel );
@@ -234,7 +199,6 @@ void insertion_sort1(T &split_array, L &final_container, int stragler , unsigned
 			final_container.push_back(split_container_front(split_array[last_jacob + i])[0]);
 	}
 	unsigned int size = final_container.size() - 1;
-	// std::cout <<"start; "<< last_jacob <<"middel; " << jacob_insertion_sequence <<" size; "<<split_array.size()<<" size; "<<final_container.size()<< "\n";
 	for (unsigned int i = 1 ;jacob_insertion_sequence - i >= last_jacob; i++)
 	{
 		if (is_stargler && jacob_insertion_sequence > split_array.size())
@@ -247,14 +211,14 @@ void insertion_sort1(T &split_array, L &final_container, int stragler , unsigned
 		{
 			insertion_sort2(final_container, split_container_back(split_array[jacob_insertion_sequence - i])[0], 0, size);
 		}
-			// insertion_sort2(final_container, split_array[jacob_insertion_sequence - i].second, 0, (jacob_insertion_sequence -1) + last_jacob);
 	}
 }
+// the overload function it does the same as te other except it won't go as deep in the array to prevent a seq
 template<typename T, typename L>
 void insertion_sort(T &split_array, L &final_container, int stragler , bool is_stragler)
 {
-	unsigned int jacob_insertion_sequence = 0;
-	unsigned int jacob_last = 1;
+	unsigned int jacob_insertion_sequence = 0;  // the next index to start inserting 
+	unsigned int jacob_last = 1; // have already done the first one 
 	unsigned int jacob_index = 3; // The first one that matters
 
 	while (jacob_last < split_array.size() || is_stragler)
@@ -263,22 +227,20 @@ void insertion_sort(T &split_array, L &final_container, int stragler , bool is_s
 		insertion_sort1(split_array,final_container, stragler,jacob_last, jacob_insertion_sequence, is_stragler);
 		jacob_index++;
 		jacob_last = jacob_insertion_sequence;
-		// jb_displayContaner(final_container, "ttt");
 	}
 }
 
 template< typename L,typename ELEM>
 void insertion_sort2(L &final_container, ELEM element , unsigned int start, unsigned int size)
 {
-	// jb_displayContaner(final_container, "4");
 	if (start >= size)
 	{
 		final_container.insert((final_container.begin()+start),element);
 		return;
 	}
 	unsigned int middel = (size - start) / 2 + start;
-	std::cout <<"start; "<< start <<"middel; " <<middel <<" size; "<<size << " elem; "<< find_number(element)<< "\n";
-	if ( compare_higher_than(element, final_container[middel]) )// find_number(final_container[middel]) < find_number(element))
+	// std::cout <<"start; "<< start <<"middel; " <<middel <<" size; "<<size << " elem; "<< find_number(element)<< "\n";
+	if ( compare_higher_than(element, final_container[middel]) )
 		insertion_sort2(final_container, element, middel +1, size);
 	else
 		insertion_sort2(final_container, element, start, middel );
@@ -292,7 +254,6 @@ void insertion_sort1(T &split_array, L &final_container, ELEM stragler , unsigne
 			final_container.push_back(split_container_front(split_array[last_jacob + i]));
 	}
 	unsigned int size = final_container.size() - 1;
-	// std::cout <<"start; "<< last_jacob <<"middel; " << jacob_insertion_sequence <<" size; "<<split_array.size()<<" size; "<<final_container.size()<< "\n";
 	for (unsigned int i = 1 ;jacob_insertion_sequence - i >= last_jacob; i++)
 	{
 		if (is_stargler && jacob_insertion_sequence > split_array.size())
@@ -305,14 +266,16 @@ void insertion_sort1(T &split_array, L &final_container, ELEM stragler , unsigne
 		{
 			insertion_sort2(final_container, split_container_back(split_array[jacob_insertion_sequence - i]), 0, size);
 		}
-			// insertion_sort2(final_container, split_array[jacob_insertion_sequence - i].second, 0, (jacob_insertion_sequence -1) + last_jacob);
 	}
 }
+// has 3 fases 1 makes the jacob numbers for the correct order of insertion
+// 2 uses the jacob number and finds the sequence to insert
+// 3 uses binary search to insert the number in the correct place
 template<typename T, typename L,typename ELEM>
 void insertion_sort(T &split_array, L &final_container, ELEM stragler , bool is_stragler)
 {
-	unsigned int jacob_insertion_sequence = 0;
-	unsigned int jacob_last = 1;
+	unsigned int jacob_insertion_sequence = 0;  // the next index to start inserting 
+	unsigned int jacob_last = 1; // have already done the first one 
 	unsigned int jacob_index = 3; // The first one that matters
 
 	while (jacob_last < split_array.size() || is_stragler)
@@ -321,31 +284,21 @@ void insertion_sort(T &split_array, L &final_container, ELEM stragler , bool is_
 		insertion_sort1(split_array,final_container, stragler,jacob_last, jacob_insertion_sequence, is_stragler);
 		jacob_index++;
 		jacob_last = jacob_insertion_sequence;
-		// jb_displayContaner(final_container, "ttt");
 	}
 }
 
-
-/*
-726498521
-72 64 98 53 1
-7264 9853 
-9853 7264
- 
-98 72 64 53
-987654321*/
 template<typename T>
-T ford_johnson1(T &container, int level)
+T ford_johnson1(T &container)
 {
 	size_t		size = container.size();
 	T			sub_container;
 	
-	// split container in pairs where the lager is after the smaller number
-	// then make a pointer sub_container consisting of the addres of the larger number of each pair
-	int com = g_comperisons;
+	// split container in pairs where the lager is before the smaller numbers groep
+	// then make a sub_container consisting of numbers begining with de larger of the par followed by the previus pairs than
+	// merging with the lower of the pair folowed by its previous pairs
 	for (size_t i = 0; i + 1 < size; i+=2)
 	{
-		if ( compare_higher_than(container[i], container[i + 1]) )//find_number(container[i]) > find_number(container[i + 1]))
+		if ( compare_higher_than(container[i], container[i + 1]) )
 		{
 			sub_container.push_back(merge_container(container[i], container[i + 1]));
 		}
@@ -354,11 +307,9 @@ T ford_johnson1(T &container, int level)
 			sub_container.push_back(merge_container(container[i+1], container[i]));
 		}
 	}
-	(void)level;
-	jb_display_pairs(sub_container, "test; ", true);
+	// the first recursion need differant types and this template is already diffined
 	if (sub_container.size() > 1)
-		sub_container = ford_johnson1(sub_container, level++);
-	// insertion_sort_pairs(sub_container, (sub_container.size() -1));
+		sub_container = ford_johnson1(sub_container);
 	// jb_display_pairs(sub_container, "test; ", false);
 
 	T final_container;
@@ -366,12 +317,11 @@ T ford_johnson1(T &container, int level)
 	// save a comperison by manualy inerting the first pair
 	final_container.push_back(split_container_back(sub_container[0]));
 	final_container.push_back(split_container_front(sub_container[0]));
+	// give straglers or not
 	if (size % 2 != 0)
 		insertion_sort(sub_container,final_container,container.back(),true);
 	else
 		insertion_sort(sub_container,final_container,container.back(),false);
-	jb_display_pairs(final_container, "final; ", true);
-	std::cout << std::setw(15) << std::left << g_comperisons  - com<< "\n";
 	return final_container;
 }
 
@@ -379,17 +329,17 @@ T ford_johnson1(T &container, int level)
 // the template strips the container argument type so we still need to define them, including the default allocator type.
 // and I used container features that limit the containers pool to vectors and deques.
 template<template<typename ELM,typename ALLOC> class T, typename TYPE, typename PAIR_TYPE>
-T<TYPE,std::allocator<TYPE>> ford_johnson(T<TYPE,std::allocator<TYPE>> &container, int level)
+T<TYPE,std::allocator<TYPE>> ford_johnson(T<TYPE,std::allocator<TYPE>> &container)
 {
 	size_t				size = container.size();
 	T<T<TYPE,std::allocator<TYPE>>,std::allocator<T<TYPE,std::allocator<TYPE>>>>	sub_container;
 	
-	// split container in pairs where the lager is after the smaller number
-	// then make a pointer sub_container consisting of the addres of the larger number of each pair
-	int com = g_comperisons;
+	// split container in pairs where the lager is before the smaller numbers groep
+	// then make a sub_container consisting of numbers begining with de larger of the par followed by the previus pairs than
+	// merging with the lower of the pair folowed by its previous pairs
 	for (size_t i = 0; i + 1 < size; i+=2)
 	{
-		if ( compare_higher_than(container[i], container[i + 1]) )//find_number(container[i]) > find_number(container[i + 1]))
+		if ( compare_higher_than(container[i], container[i + 1]) )
 		{
 			T<TYPE,std::allocator<TYPE>> pair(1, container[i]);
 			pair.push_back(container[i + 1]);
@@ -402,24 +352,20 @@ T<TYPE,std::allocator<TYPE>> ford_johnson(T<TYPE,std::allocator<TYPE>> &containe
 			sub_container.push_back(pair);
 		}
 	}
-	// sub_container.push_back(merge_container(sub_container[2],sub_container[1]));
-	// sub_container.push_back(split_container_back(sub_container.back()));
-	// sub_container.push_back(split_container_front(sub_container[sub_container.size() -2]));
-	jb_display_pairs(sub_container, "test; ", true);
-	(void)level;
+	// the first recursion need differant types and this template is already diffined
 	if (sub_container.size() > 1)
-		sub_container = ford_johnson1(sub_container, level++);
-	// insertion_sort_pairs(sub_container, (sub_container.size() -1));
-	jb_display_pairs(sub_container, "test; ", true);
+		sub_container = ford_johnson1(sub_container);
+	// jb_display_pairs(sub_container, "test; ", true);
 
 	T<TYPE,std::allocator<TYPE>> final_container;
 	// save a comperison by manualy inerting the first pair
 	final_container.push_back(split_container_back(sub_container[0])[0]);
 	final_container.push_back(split_container_front(sub_container[0])[0]);
+	// give straglers or not
 	if (size % 2 != 0)
 		insertion_sort(sub_container,final_container,container.back(),true);
 	else
 		insertion_sort(sub_container,final_container,container.back(),false);
-	std::cout << std::setw(15) << std::left << g_comperisons  - com<< "\n";
+	// std::cout << std::setw(15) << std::left << g_comperisons  - com<< "\n";
 	return final_container;
 }

@@ -53,7 +53,7 @@ int main(int argc, char const *argv[])
 	// place the argument in container and execute the ford jonson
 	jb_argumentToContaner(container1, argc, argv);
 	jb_displayContaner(container1, "Before: ");
-	container1 = ford_johnson<std::vector, int,int>(container1, 0);
+	container1 = ford_johnson<std::vector, int,int>(container1);
 	jb_displayContaner(container1, "After: ");
 	// end time by getting the current system time
 	std::chrono::high_resolution_clock::time_point end = std::chrono::high_resolution_clock::now();
@@ -64,7 +64,7 @@ int main(int argc, char const *argv[])
 	jb_argumentToContaner(container2, argc, argv);
 	start = std::chrono::high_resolution_clock::now();
 	jb_displayContaner(container2, "Before: ");
-	container2 = ford_johnson<std::deque, int,int>(container2, 0);
+	container2 = ford_johnson<std::deque, int,int>(container2);
 	// container2 = ford_johnson<std::deque>(container2);
 	// end time by getting the current system time
 	end = std::chrono::high_resolution_clock::now();
