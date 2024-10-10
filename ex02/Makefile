@@ -3,7 +3,7 @@ NAME= PmergeMe
 SRC= main.o 
 SRC+= 
 
-HEADERS= PmergeMe2.hpp
+HEADERS= PmergeMe.hpp
 CC= c++
 
 val = -ggdb3
